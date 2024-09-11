@@ -67,6 +67,46 @@ git clone https://github.com/FMWAP-Team1/finance-manager-app.git
 # 경로 이동
 cd finance-manager-app
 
+# 로컬에서 무료 SSL 인증서 생성하기 (localhost.pem, localhost-key.pem) ================
+# 1. OpenSSL 설치
+# Ubuntu:
+sudo apt update
+sudo apt install openssl
+
+# Mac:
+brew install openssl
+
+# Window:
+# https://slproweb.com/products/Win32OpenSSL.html 에서 설치
+
+# 2. SSL 인증서 및 키 파일 생성
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout localhost-key.pem -out localhost.pem
+
+# 3. 인증서 생성 중 입력할 정보
+"""
+Country Name (2 letter code) [AU]: KR
+State or Province Name (full name) [Some-State]: YourState
+Locality Name (eg, city) []: YourCity
+Organization Name (eg, company) [Internet Widgits Pty Ltd]: YourCompany
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []: localhost
+Email Address []:
+"""
+
+# 4. 생성된 파일 확인
+# localhost.pem : 인증서 파일
+# localhost-key.pem : 개인 키 파일
+
+# 5. pem 키를 저장할 폴더 만들기 / 현재 폴더가 finance-manager-app 라는 가정 하에 
+cd resources
+mkdir cert
+
+# 6. localhost.pem, localhost-key.pem 생성한 cert 폴더로 옮기기
+# 7. 프로젝트 경로로 돌아오기 
+cd finance-manager-app
+
+# ================================================================================
+
 # Docker로 프로젝트 실행
 docker-compose up --build
 ```
