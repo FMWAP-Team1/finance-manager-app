@@ -1,8 +1,8 @@
 BANK_CODE_CHOICES = [
     ("KAKAOBANK", "카카오뱅크"),
     ("KOOKMIN", "국민은행"),
-    ("NONGHYUP", "농협은행"),
-    ("INDUSTRIAL", "기업은행"),
+    ("NH", "농협은행"),
+    ("IBK", "기업은행"),
     ("WOORI", "우리은행"),
     ("SHINHAN", "신한은행")
 ]

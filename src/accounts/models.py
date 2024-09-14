@@ -14,8 +14,6 @@ class Account(BaseModel):
     account_number: Optional[str] = models.CharField(
         max_length=50,
         unique=True,
-        null=False,
-        blank=False,
         verbose_name="계좌번호",
     )
     bank_code: str = models.CharField(
