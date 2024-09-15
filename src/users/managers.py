@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from typing import Optional, Dict, Any, List
 
 class UserManager(BaseUserManager):
-    def create_user(self, email: str, password: Optional[str] = None, **extra_fields: Dict[str, Any]) -> 'User':
+    def create_user(self, email: str, password: str, **extra_fields: Dict[str, Any]) -> 'User':
         if not email:
             raise ValueError("이메일 주소는 필수 입력 항목입니다.")
         email = self.normalize_email(email)
@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email: str, password: Optional[str] = None, **extra_fields: Dict[str, Any]) -> 'User':
+    def create_superuser(self, email: str, password: str, **extra_fields: Dict[str, Any]) -> 'User':
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_admin', True)
         extra_fields.setdefault('is_active', True)
