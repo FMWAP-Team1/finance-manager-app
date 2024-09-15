@@ -1,9 +1,11 @@
+from django.db import models
 from common.models import BaseModel
+from accounts.models import Account
 from decimal import Decimal
 from datetime import datetime
 from typing import Optional
-from .consts import TRANSACTION_TYPE_CHOICES, TRANSACTION_INFO_CHOICES
-from .models import Account, BaseModel
+from .consts import TRANSACTION_INFO_CHOICES, PAYMENT_METHOD_CHOICES
+
 
 class TransactionHistory(BaseModel):
     account: models.ForeignKey = models.ForeignKey(
@@ -25,12 +27,12 @@ class TransactionHistory(BaseModel):
     )
     transaction_info: str = models.CharField(
         max_length=255,
-        choices=TRANSACTION_INFO_CHOICES,
+        choices=TRANSACTION_INFO_CHOICES,  #  consts.py에 TRANSACTION_TYPE_CHOICES 이라고 설정 되어있어서 TRANSACTION_INFO_CHOICES수정필요
         verbose_name="거래 내용",
     )
     transaction_type: str = models.CharField(
         max_length=20,
-        choices=TRANSACTION_TYPE_CHOICES,
+        choices=PAYMENT_METHOD_CHOICES,
         verbose_name="거래 유형",
     )
     payment_type: str = models.CharField(

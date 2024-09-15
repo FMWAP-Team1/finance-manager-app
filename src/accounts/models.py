@@ -1,9 +1,10 @@
+from django.db import models
 from common.models import BaseModel
 from .consts import BANK_CODE_CHOICES, ACCOUNT_TYPE_CHOICES
 from django.conf import settings
 from decimal import Decimal
 from typing import Optional
-from .consts import BANK_CODE_CHOICES, ACCOUNT_TYPE_CHOICES
+
 
 class Account(BaseModel):
     user: models.ForeignKey = models.ForeignKey(

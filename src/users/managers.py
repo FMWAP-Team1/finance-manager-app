@@ -7,8 +7,8 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("이메일 주소는 필수 입력 항목입니다.")
         email = self.normalize_email(email)
-        if not extra_fields.get('nickname') or not extra_fields.get('name'):
-            raise ValueError("닉네임과 이름은 필수 입력 사항입니다.")
+        if not extra_fields.get('name') or not extra_fields.get('phone_number'):
+            raise ValueError("이름과 전화번호는 필수 입력 사항입니다.")
         user: User = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -25,7 +25,6 @@ class UserManager(BaseUserManager):
             raise ValidationError('반드시 관리자 권한을 가져야 합니다.')
         if extra_fields.get('is_active') is not True:
             raise ValidationError('반드시 활성 상태여야 합니다.')
-
         if 'nickname' not in extra_fields or 'name' not in extra_fields or 'phone_number' not in extra_fields:
             raise ValidationError('닉네임, 이름, 전화번호는 필수 입력 사항입니다.')
 

@@ -9,7 +9,7 @@ class MasterBank(models.Model):
     )
     bank_name: models.CharField = models.CharField(
         max_length=100,
-        verbose_name="은행 이름"
+        verbose_name="은행명"
     )
 
     class Meta:

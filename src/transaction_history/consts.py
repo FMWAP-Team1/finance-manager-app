@@ -1,4 +1,4 @@
-TRANSACTION_TYPE_CHOICES = [
+TRANSACTION_INFO_CHOICES = [
     ('DEPOSIT', '입금'),
     ('WITHDRAWAL', '출금'),
 ]
