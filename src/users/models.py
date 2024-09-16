@@ -1,7 +1,7 @@
+from django.db import models
 from users.managers import UserManager
 from common.models import BaseModel
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.db import models
 from typing import Optional, Any, List
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):

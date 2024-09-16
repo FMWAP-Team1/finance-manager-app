@@ -3,11 +3,11 @@ from django.utils import timezone
 from datetime import datetime
 
 class BaseModel(models.Model):
-    created_at: datetime = models.DateTimeField(
+    created_dt: datetime = models.DateTimeField(
         verbose_name='생성일시',
         auto_now_add=True
     )
-    updated_at: datetime = models.DateTimeField(
+    updated_dt: datetime = models.DateTimeField(
         verbose_name='갱신일시',
         auto_now=True
     )
