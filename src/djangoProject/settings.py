@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -58,8 +58,7 @@ ROOT_URLCONF = 'djangoProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +69,22 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'common.authentications.CookieJWTAuthentication',  # 커스텀 인증 클래스 경로
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
+    ]
+}
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # 기본 백엔드
+    'users.backends.EmailBackend',  # 이메일을 사용한 인증
 ]
 
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
@@ -134,3 +149,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Access Token 유효 시간
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # Refresh Token 유효 시간
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# settings.py (로컬 개발 환경에서 이메일 전송 테스트)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SECURE_COOKIES = False
+
+# 서버의 기본 호스트와 프로토콜
+SERVER_PROTOCOL = 'https'
+SERVER_DOMAIN = '0.0.0.0:443'
