@@ -7,7 +7,7 @@ from users.exceptions import InvalidTokenError
 signer = TimestampSigner()
 
 
-def send_verification_email(email, request):
+def send_verification_email(email):
     token = generate_email_verification_token(email)
     verification_url = (f"{settings.SERVER_PROTOCOL}://{settings.SERVER_DOMAIN}"
                         f"{reverse('verify_email', kwargs={'token': token})}")

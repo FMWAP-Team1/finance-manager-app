@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+from decouple import Config, RepositoryEnv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# .env 파일의 절대 경로 또는 상대 경로 지정
+env_path = os.path.join(BASE_DIR, ".env")  # 또는 './config/.env'
+config = Config(RepositoryEnv(env_path))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +31,7 @@ SECRET_KEY = 'django-insecure-5yg@jw=ezimp8_ma5nm_l8p05zu&0*ocwtpoxe!bk2^1^+kt)6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 
 
 # Application definition
@@ -37,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'users',
     'accounts',
     'transaction_history',
@@ -44,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,6 +79,17 @@ TEMPLATES = [
     },
 ]
 
+# CORS_ALLOWED_ORIGINS = [
+#     'https://localhost:443',
+#     'https://127.0.0.1:443',
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost',  # localhost 추가
+    'http://localhost',   # HTTP로도 접근하는 경우
+    'https://127.0.0.1',  # 127.0.0.1 추가
+    'http://127.0.0.1',   # HTTP 127.0.0.1 추가
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -80,7 +99,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
     ]
 }
-
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # 기본 백엔드
@@ -134,7 +152,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/# settings.py
-import os
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -168,3 +185,8 @@ SECURE_COOKIES = False
 # 서버의 기본 호스트와 프로토콜
 SERVER_PROTOCOL = 'https'
 SERVER_DOMAIN = '0.0.0.0:443'
+
+# Kakao Login
+KAKAO_JAVASCRIPT_KEY = config("KAKAO_JAVASCRIPT_KEY")
+KAKAO_RESTAPI_KEY = config("KAKAO_RESTAPI_KEY")
+KAKAO_REDIRECT_URI = config("KAKAO_REDIRECT_URI")

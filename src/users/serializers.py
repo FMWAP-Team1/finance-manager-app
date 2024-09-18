@@ -3,20 +3,26 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from users.models import User
+from utils.validators import validate_create_user
 
 
 class SignUpSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, allow_null=True)
 
     class Meta:
         model = User
-        fields = ["email", "password", "name", "phone_number", "is_active"]
+        fields = ["email", "password", "login_type",
+                  "name", "nickname", "phone_number",
+                  "is_active"]
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise ValueError("이미 사용 중인 이메일입니다.")
+
+        return value
 
     def validate(self, data):
-        email = data.get("email")
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("해당 이메일은 이미 사용중입니다.")
-
+        validate_create_user(**data)
         return data
 
     def create(self, validated_data):

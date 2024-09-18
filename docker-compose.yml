@@ -6,7 +6,7 @@ services:
     expose:
       - "8000"
     volumes:
-      - static_volume:/app/staticfiles  # static 파일 볼륨
+      - static_volume:/app/static  # static 파일 볼륨
       - media_volume:/app/media  # media 파일 볼륨 (필요시)
 
   nginx:

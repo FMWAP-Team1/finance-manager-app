@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Kakao OAuth</title>
+</head>
+<body>
+    <h1>Kakao OAuth Login</h1>
+
+    <!-- 로그인 버튼 -->
+    <a href="/api/user/kakao/sign_in/">Kakao로 로그인</a>
+
+    <!-- OAuth 콜백 시 'code' 파라미터를 추출하여 백엔드로 전송하는 로직 -->
+    <script>
+        // URL에서 쿼리 파라미터를 추출하는 함수
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // 'code' 파라미터 추출
+        const code = getQueryParam('code');
+
+        // 서버에 GET 요청 보내는 로직
+        if (code) {
+            fetch(`/api/user/kakao/callback/?code=${code}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data); // 서버에서 받은 응답 처리
+                    // 예: 액세스 토큰 또는 사용자 정보 처리
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    </script>
+
+    <!-- OAuth 인증 후 리디렉션된 URL에 code 파라미터가 있을 경우 표시 -->
+    <div id="code-info">
+        <script>
+            if (code) {
+                document.getElementById('code-info').innerHTML = `<p>Code: ${code}</p>`;
+            }
+        </script>
+    </div>
+</body>
+</html>
