@@ -15,8 +15,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+# 임시용 View
+
+# views.py
+
+from django.conf import settings
+from django.shortcuts import render
+
+
+def index(request):
+    return render(request, 'index.html', {
+        'kakao_javascript_key': settings.KAKAO_JAVASCRIPT_KEY  # .env에서 불러온 키 전달
+    })
+
 
 urlpatterns = [
+    path("", index),
     path('admin/', admin.site.urls),
+    path("api/user/", include("users.urls")),
 ]
