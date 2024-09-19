@@ -52,3 +52,10 @@ def sign_out(refresh: str) -> None:
 def refresh_token(refresh: str) -> Dict[str, str]:
     new_token = Jwt.refresh_token(refresh=refresh)
     return new_token.token_dict
+
+
+class UserService:
+    @staticmethod
+    def get_user_with_accounts(user):
+        accounts = user.account_set.all()
+        return user, accounts
