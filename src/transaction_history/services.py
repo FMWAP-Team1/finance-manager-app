@@ -15,7 +15,6 @@ def add_transaction_history(account, amount: Decimal, balance_after: Decimal, tr
 
     serializer = THCreateSerializer(data=data)
 
-    # 유효성 검사
     if serializer.is_valid():
         serializer.save()
     else:
