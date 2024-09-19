@@ -64,7 +64,7 @@ class AccountTransactionAPIView(APIView):
             try:
                 updated_account = AccountService.perform_transaction(account, serializer.validated_data)
                 return Response({
-                    "message": "Transaction completed successfully.",
+                    "message": "거래가 성공적으로 완료되었습니다.",
                     "account_id": updated_account.id,
                     "new_balance": updated_account.balance
                 }, status=status.HTTP_200_OK)
