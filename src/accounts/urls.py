@@ -10,5 +10,3 @@ urlpatterns = [
     path('<uuid:account_id>/', AccountDetailAPIView.as_view(), name='account_detail'),
     path('<uuid:account_id>/transaction/', AccountTransactionAPIView.as_view(), name='account_transaction'),
 ]
-
-# path('users/me/', UserDetailAPIView.as_view(), name='user_detail'), # 유저 쪽으로 기능 분리

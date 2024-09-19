@@ -35,5 +35,6 @@ urlpatterns = [
     path("", index),
     path('admin/', admin.site.urls),
     path("api/user/", include("users.urls")),
-    path('api.account/', include('accounts.urls')),
+    path('api/account/', include('accounts.urls')),
+    path('api/transaction/', include('transaction_history.urls')),
 ]

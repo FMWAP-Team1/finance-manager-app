@@ -10,12 +10,12 @@ from rest_framework import status, generics
 
 from accounts.pagination import StandardResultsSetPagination
 from accounts.serializers import AccountDetailSerializer
-from accounts.services import UserService
 from users.exceptions import InvalidTokenError, UserNotFoundError
 from users.serializers import UserDetailSerializer
 from users.services import (sign_up, sign_in, sign_out,
                             refresh_token,
-                            verify_email)
+                            verify_email,
+                            UserService)
 from utils.email import send_verification_email
 
 
@@ -192,8 +192,8 @@ class VerifyEmailView(APIView):
 
 
 class UserDetailAPIView(generics.RetrieveAPIView): #유저 쪽으로 분리
+    permission_classes = [AllowAny]
     serializer_class = UserDetailSerializer
-    permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsSetPagination
 
     def get_object(self):

@@ -32,8 +32,3 @@ class AccountTransactionSerializer(serializers.Serializer):
     transaction_info = serializers.CharField(max_length=255)
 
 
-# class UserDetailSerializer(serializers.ModelSerializer): # 유저 쪽으로 분리
-#     class Meta:
-#         model = User
-#         fields = ['id', 'email', 'name', 'nickname', 'phone_number']
-#         read_only_fields = ['id', 'email']

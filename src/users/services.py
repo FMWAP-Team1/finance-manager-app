@@ -54,3 +54,8 @@ def refresh_token(refresh: str) -> Dict[str, str]:
     return new_token.token_dict
 
 
+class UserService:
+    @staticmethod
+    def get_user_with_accounts(user):
+        accounts = user.account_set.all()
+        return user, accounts
