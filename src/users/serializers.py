@@ -55,3 +55,10 @@ class SignInSerializer(serializers.ModelSerializer):
         # 유저 인증 및 활성화 상태 확인 성공
         data["user"] = user
         return data
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'name', 'nickname', 'phone_number']
+        read_only_fields = ['id', 'email']

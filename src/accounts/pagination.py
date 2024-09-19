@@ -9,8 +9,8 @@ class StandardResultsSetPagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
         return Response({
-            '다음': self.get_next_link(),
-            '이전': self.get_previous_link(),
-            '총 개수': self.page.paginator.count,
-            '결과': data
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
+            'total_count': self.page.paginator.count,
+            'results': data
         })

@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.db import transaction
 from django.core.exceptions import ValidationError
 from accounts.models import Account
@@ -8,8 +11,30 @@ logger = logging.getLogger(__name__)
 
 class AccountService:
     @staticmethod
+    def generate_account_number():
+        return ''.join(random.choices(string.digits, k=13))
+
+    @staticmethod
+    def create_formatted_account_number(bank_code, account_number):
+        bank_prefixes = {
+            'KAKAOBANK': 'KA',
+            'KOOKMIN': 'KB',
+            'NH': 'NH',
+            'IBK': 'IB',
+            'WOORI': 'WR',
+            'SHINHAN': 'SH'
+        }
+        prefix = bank_prefixes.get(bank_code, 'UK')
+        return f"{prefix}_{account_number}"
+
+    @staticmethod
     def create_account(user, account_data):
         try:
+            account_number = AccountService.generate_account_number()
+            formatted_account_number = AccountService.create_formatted_account_number(
+                account_data['bank_code'], account_number
+            )
+            account_data['account_number'] = formatted_account_number
             account = Account.objects.create(user=user, **account_data)
             logger.info(f"계좌 생성: 사용자 {user.id}의 계좌 {account.id}")
             return account
@@ -20,7 +45,7 @@ class AccountService:
     @staticmethod
     def get_account_with_transactions(account_id, user):
         account = Account.objects.get(id=account_id, user=user)
-        transactions = account.transactionhistory_set.all()
+        transactions = account.transactionhistory_set.all().order_by('-created_dt')
         return account, transactions
 
     @staticmethod

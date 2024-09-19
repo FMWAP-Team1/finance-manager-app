@@ -3,12 +3,16 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, generics
 
+from accounts.pagination import StandardResultsSetPagination
+from accounts.serializers import AccountDetailSerializer
+from accounts.services import UserService
 from users.exceptions import InvalidTokenError, UserNotFoundError
+from users.serializers import UserDetailSerializer
 from users.services import (sign_up, sign_in, sign_out,
                             refresh_token,
                             verify_email)
@@ -185,3 +189,25 @@ class VerifyEmailView(APIView):
             return HttpResponse(f"<h1>{ite.detail}</h1>", status=ite.status_code)
         except UserNotFoundError as unfe:
             return HttpResponse(f"<h1>{unfe.detail}</h1>", status=unfe.status_code)
+
+
+class UserDetailAPIView(generics.RetrieveAPIView): #유저 쪽으로 분리
+    serializer_class = UserDetailSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+
+    def get_object(self):
+        return self.request.user
+
+    def retrieve(self, request, *args, **kwargs):
+        user, accounts = UserService.get_user_with_accounts(request.user)
+        user_data = self.get_serializer(user).data
+
+        paginator = self.pagination_class()
+        paginated_accounts = paginator.paginate_queryset(accounts, request)
+        account_data = AccountDetailSerializer(paginated_accounts, many=True).data
+
+        return paginator.get_paginated_response({
+            '사용자': user_data,
+            '계좌목록': account_data
+        })

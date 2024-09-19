@@ -1,6 +1,6 @@
 from django.urls import path
 from users.views import (SignInAPIVIew, SignUpAPIVIew, SignOutAPIVIew,
-                         RefreshTokenAPIVIew, VerifyEmailView, KakaoLoginView, KakaoCallbackView)
+                         RefreshTokenAPIVIew, VerifyEmailView, KakaoLoginView, KakaoCallbackView, UserDetailAPIView)
 
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path("sign_out/", SignOutAPIVIew.as_view(), name='sign_out'),
     path("refresh/", RefreshTokenAPIVIew.as_view(), name='refresh_token'),
     path("verify/<str:token>/", VerifyEmailView.as_view(), name='verify_email'),
+    path('detail/', UserDetailAPIView.as_view(), name='user_detail'),
 ]

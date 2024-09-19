@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from accounts.models import Account
-from users.models import User
 from django.core.validators import MinValueValidator
 
 
@@ -19,7 +18,7 @@ class AccountDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['id', 'account_number', 'bank_code', 'account_type', 'balance']
-        read_only_fields = ['id', 'balance']
+        read_only_fields = ['id', 'account_number','balance']
 
 
 class AccountTransactionSerializer(serializers.Serializer):
@@ -33,8 +32,8 @@ class AccountTransactionSerializer(serializers.Serializer):
     transaction_info = serializers.CharField(max_length=255)
 
 
-class UserDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'email', 'name', 'nickname', 'phone_number']
-        read_only_fields = ['id', 'email']
+# class UserDetailSerializer(serializers.ModelSerializer): # 유저 쪽으로 분리
+#     class Meta:
+#         model = User
+#         fields = ['id', 'email', 'name', 'nickname', 'phone_number']
+#         read_only_fields = ['id', 'email']
