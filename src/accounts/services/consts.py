@@ -1,0 +1,5 @@
+BANK_PREFIXES = {
+    'KAKAOBANK': 'KA', 'KOOKMIN': 'KB', 'NH': 'NH',
+    'IBK': 'IB', 'WOORI': 'WR', 'SHINHAN': 'SH'
+}
+MAX_ATTEMPTS = 1000
